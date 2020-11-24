@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import mapAsset from "./assets/map.json";
 import tilesAsset from "./assets/tiles.png"
-import coinAsset from "./assets/coinGold.png"
+import coinAsset from "./assets/TomteStatic.png"
 import playerAsset from "./assets/player.png" 
 import playerJSONAsset from "./assets/player.json"
 

@@ -14,7 +14,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: {y: 500},
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -29,6 +29,7 @@ var game = new Phaser.Game(config);
 
 var map;
 var player;
+var coins;
 var cursors;
 var groundLayer, coinLayer;
 var text;
@@ -68,17 +69,6 @@ function create() {
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
 
-    for (var i = 0; i < 2; i++){
-        const x = Math.floor(Math.random()*500);
-        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
-        enemy.setScale(0.1);
-        enemy.setCollideWorldBounds(true);
-        enemy.setBounce(0.2);
-        //enemy.body.setSize(enemy.width-100, enemy.height-100);
-        this.physics.add.collider(groundLayer, enemy);
-        enemies.push(enemy);
-    }
-
     // create the player sprite    
     player = this.physics.add.sprite(200, 200, 'player');
     player.setBounce(0.2); // our player will bounce from items
@@ -90,15 +80,28 @@ function create() {
     // player will collide with the level tiles 
     this.physics.add.collider(groundLayer, player);
 
+    for (var i = 0; i < 2; i++){
+        const x = (player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        //const x = Math.floor(Math.random()*500);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(0.1);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.5);
+        enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        enemy.allowGravity = false;
+        //enemy.body.setSize(enemy.width-100, enemy.height-100);
+        this.physics.add.collider(groundLayer, enemy);
+        enemies.push(enemy);
+    }
+
     coinLayer.setTileIndexCallback(17, collectCoin, this);
     // when the player overlaps with a tile with index 17, collectCoin 
     // will be called    
     this.physics.add.overlap(player, coinLayer);
-
     // player walk animation
     this.anims.create({
         key: 'walk',
-        frames: this.anims.generateFrameNames('player', {prefix: 'p1_walk', start: 1, end: 11, zeroPad: 2}),
+        frames: this.anims.generateFrameNames('player', {prefix: 'p1_walk', coint: 1, end: 11, zeroPad: 2}),
         frameRate: 10,
         repeat: -1
     });
@@ -121,7 +124,7 @@ function create() {
     this.cameras.main.setBackgroundColor('#ccccff');
 
     // this text will show the score
-    text = this.add.text(20, 570, '0', {
+    text = this.add.text(20, 570, 'Score: 0', {
         fontSize: '20px',
         fill: '#ffffff'
     });
@@ -132,14 +135,63 @@ function create() {
 // this function will be called when the player touches a coin
 function collectCoin(sprite, tile) {
     coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
-    score++; // add 10 points to the score
-    text.setText(score); // set the text to show the current score
+    //console.log(coinLayer.culledTiles.length)
+    score++; // add 1 points to the score
+    text.setText("Score: " + score); // set the text to show the current score
     return false;
 }
 
+
+
+function collectCoinNext (player, coin)
+{
+    coin.disableBody(true, true);
+
+    score += 1;
+    text.setText('Score: ' + score);
+
+    if (coins.countActive(true) === 0)
+    {
+        coins.children.iterate(function (child) {
+
+            child.enableBody(true, child.x, 0, true, true);
+
+        });
+
+    }
+}
+
 function update(time, delta) {
+    if (coinLayer.culledTiles.length == 1) {
+        if (coins == undefined) {
+        
+        coins = this.physics.add.group({
+    key: 'coin',
+    repeat: 30,
+    setXY: { x: 0, y: 0, stepX: 70 }
+});
+this.physics.add.collider(groundLayer, coins);
+
+coins.children.iterate(function (child) {
+    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+});
+    this.physics.add.overlap(player, coins, collectCoinNext, null, this);
+}
+}
     for (var enemy of enemies){
-        enemy.y += 3;
+        //const x = Math.floor(Math.random()*5);
+        const playerX = player.x;
+        if (enemy.x <= playerX - 5) {
+            enemy.x += 3
+            //enemy.y += 3;
+        } else if (enemy.x > playerX + 5){
+            enemy.x -= 3
+            if (enemy.y > 10) {
+            enemy.y -= 3;
+        }
+        }
+        //console.log("Moving enemy x: " + x)
     }
     if (cursors.left.isDown)
     {

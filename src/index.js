@@ -49,16 +49,6 @@ function preload() {
 }
 
 function create() {
-    for (var i = 0; i < 2; i++){
-        const x = Math.floor(Math.random()*800);
-        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
-        enemy.setScale(0.1);
-        enemy.setCollideWorldBounds(true);
-        enemy.setBounce(0.2);
-        //enemy.body.setSize(enemy.width-100, enemy.height-100);
-        //this.physics.add.collider(groundLayer, enemy);
-        enemies.push(enemy);
-    }
     // load the map 
     map = this.make.tilemap({key: 'map'});
 
@@ -77,6 +67,17 @@ function create() {
     // set the boundaries of our game world
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
+
+    for (var i = 0; i < 2; i++){
+        const x = Math.floor(Math.random()*500);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(0.1);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.2);
+        //enemy.body.setSize(enemy.width-100, enemy.height-100);
+        this.physics.add.collider(groundLayer, enemy);
+        enemies.push(enemy);
+    }
 
     // create the player sprite    
     player = this.physics.add.sprite(200, 200, 'player');

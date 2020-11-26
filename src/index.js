@@ -4,6 +4,7 @@ import tilesAsset from "./assets/tiles.png"
 import coinAsset from "./assets/coinGold.png"
 import playerAsset from "./assets/player.png" 
 import playerJSONAsset from "./assets/player.json"
+import enemyAsset from "./assets/nisse.png";
 
 var config = {
     type: Phaser.AUTO,
@@ -32,8 +33,11 @@ var cursors;
 var groundLayer, coinLayer;
 var text;
 var score = 0;
+const enemies = [];
+
 
 function preload() {
+        this.load.image("enemy", enemyAsset)
         // map made with Tiled in JSON format
         this.load.tilemapTiledJSON('map', mapAsset);
         // tiles in spritesheet 
@@ -45,6 +49,16 @@ function preload() {
 }
 
 function create() {
+    for (var i = 0; i < 2; i++){
+        const x = Math.floor(Math.random()*800);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(0.1);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.2);
+        //enemy.body.setSize(enemy.width-100, enemy.height-100);
+        //this.physics.add.collider(groundLayer, enemy);
+        enemies.push(enemy);
+    }
     // load the map 
     map = this.make.tilemap({key: 'map'});
 
@@ -123,6 +137,9 @@ function collectCoin(sprite, tile) {
 }
 
 function update(time, delta) {
+    for (var enemy of enemies){
+        enemy.y += 1;
+    }
     if (cursors.left.isDown)
     {
         player.body.setVelocityX(-200);

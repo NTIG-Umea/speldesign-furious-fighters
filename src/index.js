@@ -139,7 +139,7 @@ function collectCoin(sprite, tile) {
 
 function update(time, delta) {
     for (var enemy of enemies){
-        enemy.y += 1;
+        enemy.y += 3;
     }
     if (cursors.left.isDown)
     {

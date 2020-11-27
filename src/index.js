@@ -5,6 +5,7 @@ import coinAsset from "./assets/coinGold.png"
 import playerAsset from "./assets/player.png" 
 import playerJSONAsset from "./assets/player.json"
 import enemyAsset from "./assets/nisse.png";
+//import enemy from "./enemy.js"
 
 var config = {
     type: Phaser.AUTO,
@@ -27,12 +28,18 @@ var config = {
 
 var game = new Phaser.Game(config);
 
+var playerHp = 100;
+var enemyHp = 10;
+var level = 0;
+var dmg;
 var map;
 var player;
 var coins;
 var cursors;
 var groundLayer, coinLayer;
-var text;
+var textScore;
+var textPlayerHp;
+var textLevel;
 var score = 0;
 const enemies = [];
 
@@ -124,12 +131,24 @@ function create() {
     this.cameras.main.setBackgroundColor('#ccccff');
 
     // this text will show the score
-    text = this.add.text(20, 570, 'Score: 0', {
+    textScore = this.add.text(20, 570, 'Score: 0', {
         fontSize: '20px',
         fill: '#ffffff'
     });
     // fix the text to the camera
-    text.setScrollFactor(0);
+    textScore.setScrollFactor(0);
+    textPlayerHp = this.add.text(20, 570, 'Your HP: 100', {
+        fontSize: '20px',
+        fill: '#cccccf'
+    });
+    // fix the text to the camera
+    textPlayerHp.setScrollFactor(0);
+    textLevel = this.add.text(20, 570, 'Level: 0', {
+        fontSize: '20px',
+        fill: '#cccccf'
+    });
+    // fix the text to the camera
+    textLevel.setScrollFactor(0);
 }
 
 // this function will be called when the player touches a coin
@@ -137,8 +156,16 @@ function collectCoin(sprite, tile) {
     coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
     //console.log(coinLayer.culledTiles.length)
     score++; // add 1 points to the score
-    text.setText("Score: " + score); // set the text to show the current score
+    textScore.setText("Score: " + score); // set the text to show the current score
     return false;
+}
+
+function updatePlayerHPText(){
+    textPlayerHp.setText("Your HP: " + playerHp);
+}
+
+function updateLevelText(){
+    textLevel.setText("Level: " + level);
 }
 
 
@@ -148,7 +175,7 @@ function collectCoinNext (player, coin)
     coin.disableBody(true, true);
 
     score += 1;
-    text.setText('Score: ' + score);
+    textScore.setText('Score: ' + score);
 
     if (coins.countActive(true) === 0)
     {
@@ -191,6 +218,14 @@ coins.children.iterate(function (child) {
             enemy.y -= 3;
         }
         }
+        if (enemy.x <= player.x + 1) {
+            playerHp -= 5;
+            updatePlayerHPText();
+        }
+        if (enemy.y <= player.y + 1){
+            playerHp -= 5;
+            updatePlayerHPText();
+        }
         //console.log("Moving enemy x: " + x)
     }
     if (cursors.left.isDown)
@@ -213,4 +248,5 @@ coins.children.iterate(function (child) {
     {
         player.body.setVelocityY(-500);        
     }
+    //if (cursors)
 }

@@ -29,8 +29,8 @@ var config = {
 var game = new Phaser.Game(config);
 
 var playerHp = 100;
-var enemyHp = 10;
-var level = 0;
+//var enemyHp = 10;
+var level = 1;
 var dmg;
 var map;
 var player;
@@ -86,7 +86,7 @@ function create() {
     
     // player will collide with the level tiles 
     this.physics.add.collider(groundLayer, player);
-
+    
     for (var i = 0; i < 2; i++){
         const x = (player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         //const x = Math.floor(Math.random()*500);
@@ -98,6 +98,7 @@ function create() {
         enemy.allowGravity = false;
         //enemy.body.setSize(enemy.width-100, enemy.height-100);
         this.physics.add.collider(groundLayer, enemy);
+        enemy.hp = 10;
         enemies.push(enemy);
     }
 
@@ -137,15 +138,15 @@ function create() {
     });
     // fix the text to the camera
     textScore.setScrollFactor(0);
-    textPlayerHp = this.add.text(20, 570, 'Your HP: 100', {
+    textPlayerHp = this.add.text(140, 570, 'Your HP: 100', {
         fontSize: '20px',
-        fill: '#cccccf'
+        fill: '#ffffff'
     });
     // fix the text to the camera
     textPlayerHp.setScrollFactor(0);
-    textLevel = this.add.text(20, 570, 'Level: 0', {
+    textLevel = this.add.text(300, 570, 'Level: 1', {
         fontSize: '20px',
-        fill: '#cccccf'
+        fill: '#ffffff'
     });
     // fix the text to the camera
     textLevel.setScrollFactor(0);
@@ -188,8 +189,30 @@ function collectCoinNext (player, coin)
     }
 }
 
+function attackPlayer(){
+
+}
+
+function attackEnemies(){
+
+}
+
 function update(time, delta) {
     if (coinLayer.culledTiles.length == 1) {
+        if (coins == undefined){
+        if (score >= 15 & score < 50){
+            level++;
+            updateLevelText();
+        }
+    }
+        if (coins != undefined){
+        if (coins.countActive(true) == 0){
+            if (score >= 50 & score < 100){
+                level++;
+                updateLevelText();
+            }
+        }
+    }
         if (coins == undefined) {
         
         coins = this.physics.add.group({
@@ -206,6 +229,22 @@ coins.children.iterate(function (child) {
     this.physics.add.overlap(player, coins, collectCoinNext, null, this);
 }
 }
+if (level == 2){
+    for (var i = 0; i < 3; i++){
+        const x = (player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        //const x = Math.floor(Math.random()*500);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(0.1);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.5);
+        enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        enemy.allowGravity = false;
+        //enemy.body.setSize(enemy.width-100, enemy.height-100);
+        this.physics.add.collider(groundLayer, enemy);
+        enemy.hp = 15;
+        enemies.push(enemy);
+    }
+}
     for (var enemy of enemies){
         //const x = Math.floor(Math.random()*5);
         const playerX = player.x;
@@ -219,12 +258,16 @@ coins.children.iterate(function (child) {
         }
         }
         if (enemy.x <= player.x + 1) {
-            playerHp -= 5;
+            if (playerHp >= 5){
+           // playerHp -= 5;
             updatePlayerHPText();
+            }
         }
         if (enemy.y <= player.y + 1){
-            playerHp -= 5;
-            updatePlayerHPText();
+            if (playerHp >= 5){
+             //   playerHp -= 5;
+                updatePlayerHPText();
+                }
         }
         //console.log("Moving enemy x: " + x)
     }

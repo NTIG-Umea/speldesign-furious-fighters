@@ -41,6 +41,7 @@ var textScore;
 var textPlayerHp;
 var textLevel;
 var score = 0;
+var enemyCount = 0;
 const enemies = [];
 
 
@@ -99,6 +100,7 @@ function create() {
         //enemy.body.setSize(enemy.width-100, enemy.height-100);
         this.physics.add.collider(groundLayer, enemy);
         enemy.hp = 10;
+        enemyCount++
         enemies.push(enemy);
     }
 
@@ -230,6 +232,7 @@ coins.children.iterate(function (child) {
 }
 }
 if (level == 2){
+    if (enemyCount < 5){
     for (var i = 0; i < 3; i++){
         const x = (player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         //const x = Math.floor(Math.random()*500);
@@ -242,8 +245,10 @@ if (level == 2){
         //enemy.body.setSize(enemy.width-100, enemy.height-100);
         this.physics.add.collider(groundLayer, enemy);
         enemy.hp = 15;
+        enemyCount++;
         enemies.push(enemy);
     }
+}
 }
     for (var enemy of enemies){
         //const x = Math.floor(Math.random()*5);

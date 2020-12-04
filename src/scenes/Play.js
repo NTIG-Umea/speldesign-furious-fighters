@@ -81,15 +81,15 @@ export default class PlayScene extends Phaser.Scene {
    // this.player walk animation
    this.anims.create({
        key: 'walk',
-       frames: this.anims.generateFrameNames('player', {prefix: 'p1_walk', coint: 1, end: 11, zeroPad: 2}),
+       frames: this.anims.generateFrameNumbers('player', { start: 1, end: 3 }),
        frameRate: 10,
        repeat: -1
    });
    // idle with only one frame, so repeat is not neaded
    this.anims.create({
        key: 'idle',
-       frames: [{key: 'player', frame: 'p1_stand'}],
-       frameRate: 10,
+       frames: this.anims.generateFrameNumbers('player', { start: 1, end: 1 }),
+       frameRate: 10
    });
 
 

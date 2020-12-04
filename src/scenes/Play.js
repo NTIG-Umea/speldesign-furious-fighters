@@ -62,7 +62,7 @@ export default class PlayScene extends Phaser.Scene {
        const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
        //const x = Math.floor(Math.random()*500);
        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
-       enemy.setScale(0.1);
+       enemy.setScale(2.5);
        enemy.setCollideWorldBounds(true);
        enemy.setBounce(0.5);
        enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -195,7 +195,7 @@ if (this.level == 2){
         const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         //const x = Math.floor(Math.random()*500);
         const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
-        enemy.setScale(0.1);
+        enemy.setScale(2.5);
         enemy.setCollideWorldBounds(true);
         enemy.setBounce(0.5);
         enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);

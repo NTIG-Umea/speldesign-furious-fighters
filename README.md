@@ -1,2 +1,2 @@
 # speldesign-furious-fighters
-With parcel now
+With parcel

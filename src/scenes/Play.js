@@ -12,10 +12,39 @@ export default class PlayScene extends Phaser.Scene {
       }
     });
   }
-
+/**
+ * 
+var playerHp = 100;
+//var enemyHp = 10;
+var level = 1;
+var dmg;
+var map;
+var player;
+var coins;
+var cursors;
+var groundLayer, coinLayer;
+var textScore;
+var textPlayerHp;
+var textLevel;
+var score = 0;
+var enemyCount = 0;
+const enemies = [];
+ */
   create () {
     this.gameOver = false;
     this.score = 0;
+    this.playerHp = 100;
+    this.level = 1;
+    this.dmg;
+    this.map;
+    this.player;
+    this.coins;
+    this.cursors;
+    this.groundLayer;
+    this.textLevel;
+    this.enemyCount = 0;
+    this.enemies = [];
+
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 

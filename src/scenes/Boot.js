@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import images from './../assets/*.png';
+import json from './../assets/*.json';
 
 export default class BootScene extends Phaser.Scene {
   constructor () {
@@ -11,16 +12,19 @@ export default class BootScene extends Phaser.Scene {
     var bar = this.add.rectangle(bg.x, bg.y, bg.width, bg.height, 0xffffff).setScale(0, 1);
 
     console.table(images);
-
+    this.load.image("enemy", images.nisse)
+    // map made with Tiled in JSON format
+    this.load.tilemapTiledJSON('map', json.map);
+    // tiles in spritesheet 
+    this.load.spritesheet('tiles', images.tiles, {frameWidth: 70, frameHeight: 70});
+    // simple coin image
+    this.load.image('coin', images.coins);
+    // player animations
+    this.load.atlas('player', images.player, json.player);
     this.load.image('space', images.space);
     this.load.image('logo', images.logo);
     this.load.image('red', images.red);
 
-    this.load.image('sky', images.sky);
-    this.load.image('ground', images.platform);
-    this.load.image('star', images.star);
-    this.load.image('bomb', images.bomb);
-    this.load.spritesheet('dude', images.dude, { frameWidth: 32, frameHeight: 48 });
 
     this.load.on('progress', function (progress) {
       bar.setScale(progress, 1);

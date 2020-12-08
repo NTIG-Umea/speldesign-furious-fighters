@@ -29,6 +29,9 @@ export default class PlayScene extends Phaser.Scene {
     this.textLevel;
     this.enemyCount = 0;
     this.enemies = [];
+    this.playerX = 0;
+    this.playerY = 0;
+    this.enemyGroup;
     // load the map 
    this.map = this.make.tilemap({key: 'map'});
    // tiles for the ground layer
@@ -62,10 +65,12 @@ export default class PlayScene extends Phaser.Scene {
        const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
        //const x = Math.floor(Math.random()*500);
        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+       enemy.yPos = 0;
+       enemy.xPos = 0;
        enemy.setScale(2.5);
        enemy.setCollideWorldBounds(true);
        enemy.setBounce(0.5);
-       enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+       //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
        enemy.allowGravity = false;
        //enemy.body.setSize(enemy.width-100, enemy.height-100);
        this.physics.add.collider(this.groundLayer, enemy);
@@ -138,6 +143,7 @@ export default class PlayScene extends Phaser.Scene {
     // {
     //     return;
     // }
+    //this.playerHp -= 10;
     if (this.scene.isVisible('pause')) {
         this.scene.setVisible(false, 'pause');
       }
@@ -145,7 +151,6 @@ export default class PlayScene extends Phaser.Scene {
         if (this.coins == undefined){
         if (this.score >= 15 & this.score < 50){
             this.level++;
-            //updateLevelText();
             this.textLevel.setText("Level: " + this.level);
         }
     }
@@ -153,8 +158,24 @@ export default class PlayScene extends Phaser.Scene {
         if (this.coins.countActive(true) == 0){
             if (this.score >= 50 & this.score < 100){
                 this.level++;
-                //updateLevelText();
                 this.textLevel.setText("Level: " + this.level);
+            }
+            if (this.score >= 100){
+                this.level++;
+                this.textLevel.setText("Level: " + this.level)
+                //move player and level text a little bit
+                this.textPlayerHp = this.add.text(120, 570, 'Your HP: 100', {
+                    fontSize: '20px',
+                    fill: '#ffffff'
+                });
+                // fix the text to the camera
+                this.textPlayerHp.setScrollFactor(0);
+                this.textLevel = this.add.text(320, 570, 'Level: 1', {
+                    fontSize: '20px',
+                    fill: '#ffffff'
+                });
+                // fix the text to the camera
+                this.textLevel.setScrollFactor(0);
             }
         }
     }
@@ -198,7 +219,7 @@ if (this.level == 2){
         enemy.setScale(2.5);
         enemy.setCollideWorldBounds(true);
         enemy.setBounce(0.5);
-        enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
         enemy.allowGravity = false;
         //enemy.body.setSize(enemy.width-100, enemy.height-100);
         this.physics.add.collider(this.groundLayer, enemy);
@@ -209,45 +230,43 @@ if (this.level == 2){
 }
 }
     for (var enemy of this.enemies){
-        console.log("Enemy HP: " + enemy.hp)
-        //const x = Math.floor(Math.random()*5);
-        const playerX = this.player.x;
-        if (enemy.x <= this.playerX - 5) {
-            enemy.x += 3
-            //enemy.y += 3;
-        } else if (enemy.x > this.playerX + 5){
-            enemy.x -= 3
-            if (enemy.y > 10) {
-            enemy.y -= 3;
+        if (enemy.body.onFloor() & enemy.y <= 0) {
+            //enemy.y -= 10;
+            //enemy.setVelocityY(-500)
         }
+        if (enemy.xPos < this.playerX){
+            //enemy.xPos += 10;
+            //enemy.setVelocityX(Phaser.Math.Between(-200, 200), 20);
+            //enemy.setVelocityX(100)
         }
-        if (enemy.x <= this.player.x + 1) {
-            if (this.playerHp >= 5){
-           // this.playerHp -= 5;
-            //updatePlayerHPText();
-            this.textPlayerHp.setText("Your HP: " + this.playerHp);
-            }
+        if (enemy.xPos >= this.playerX){
+            enemy.xPos -= 10;
+            enemy.setVelocityX(100)
+            //enemy.setVelocityX(Phaser.Math.Between(-200, 200), 20);
+            //enemy.setVelocityX(-100)
         }
-        if (enemy.y <= this.player.y + 1){
-            if (this.playerHp >= 5){
-             //   this.playerHp -= 5;
-              //  updatePlayerHPText();
-              this.textPlayerHp.setText("Your HP: " + this.playerHp);
-                }
-        }
-        //console.log("Moving enemy x: " + x)
+        //console.log("Enemy HP: " + enemy.hp)
+        //var targetVelocity = this.player.body.velocity.clone();
+        console.log("e x: "+Math.round(enemy.x))
+        console.log("p x: " + Math.round(this.playerX))
+        
+        //    enemy.x -= Math.floor(Math.random() * 10) + 3
+          //  enemy.body.setVelocityX(-200 )
+          
     }
     if (this.cursors.left.isDown)
     {
         this.player.body.setVelocityX(-200);
         this.player.anims.play('walk', true); // walk left
         this.player.flipX = true; // flip the sprite to the left
+        this.playerX = -10;
     }
     else if (this.cursors.right.isDown)
     {
         this.player.body.setVelocityX(200);
         this.player.anims.play('walk', true);
         this.player.flipX = false; // use the original sprite looking to the right
+        this.playerX = 10;
     } else {
         this.player.body.setVelocityX(0);
         this.player.anims.play('idle', true);
@@ -255,7 +274,8 @@ if (this.level == 2){
     // jump 
     if (this.cursors.up.isDown && this.player.body.onFloor())
     {
-        this.player.body.setVelocityY(-500);        
+        this.player.body.setVelocityY(-500); 
+        this.playerY = -10;       
     }
     if (this.scene.isVisible('pause')) {
       this.scene.setVisible(false, 'pause');

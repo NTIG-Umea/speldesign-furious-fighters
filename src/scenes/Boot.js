@@ -18,7 +18,7 @@ export default class BootScene extends Phaser.Scene {
     // tiles in spritesheet 
     this.load.spritesheet('tiles', images.tiles, {frameWidth: 70, frameHeight: 70});
     // simple coin image
-    this.load.atlas('coin', images.kaka, json.kaka);
+    this.load.atlas('kaka', images.kaka, json.kaka);
     // player animations
     this.load.atlas('player', images.player, json.player);
     this.load.image('space', images.space);

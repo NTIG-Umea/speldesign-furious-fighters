@@ -160,7 +160,7 @@ export default class PlayScene extends Phaser.Scene {
                 this.level++;
                 this.textLevel.setText("Level: " + this.level);
             }
-            if (this.score >= 100){
+            if (this.score >= 100 & this.score < 200){
                 this.level++;
                 this.textLevel.setText("Level: " + this.level)
                 //move player and level text a little bit
@@ -176,6 +176,18 @@ export default class PlayScene extends Phaser.Scene {
                 });
                 // fix the text to the camera
                 this.textLevel.setScrollFactor(0);
+            }
+            if (this.score >= 200 & this.score < 300){
+                this.level++;
+                this.textLevel.setText("Level: " + this.level);
+            }
+            if (this.score >= 300 & this.score < 400){
+                this.level++;
+                this.textLevel.setText("Level: " + this.level);
+            }
+            if (this.score >= 400 & this.score < 500){
+                this.level++;
+                this.textLevel.setText("Level: " + this.level);
             }
         }
     }
@@ -229,29 +241,45 @@ if (this.level == 2){
     }
 }
 }
+if (this.level == 3){
+    if (this.enemyCount < 5){
+    for (var i = 0; i < 4; i++){
+        const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        //const x = Math.floor(Math.random()*500);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(2.5);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.5);
+        //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        enemy.allowGravity = false;
+        //enemy.body.setSize(enemy.width-100, enemy.height-100);
+        this.physics.add.collider(this.groundLayer, enemy);
+        enemy.hp = 15;
+        this.enemyCount++;
+        this.enemies.push(enemy);
+    }
+}
+}
     for (var enemy of this.enemies){
         if (enemy.body.onFloor() & enemy.y <= 0) {
             //enemy.y -= 10;
             //enemy.setVelocityY(-500)
         }
-        if (enemy.xPos < this.playerX){
-            //enemy.xPos += 10;
-            //enemy.setVelocityX(Phaser.Math.Between(-200, 200), 20);
-            //enemy.setVelocityX(100)
-        }
         if (enemy.xPos >= this.playerX){
-            enemy.xPos -= 10;
-            enemy.setVelocityX(100)
+            //enemy.xPos -= 10;
+            enemy.setVelocityX(-Phaser.Math.Between(100, 200), 20)
+            enemy.flipX = false;
             //enemy.setVelocityX(Phaser.Math.Between(-200, 200), 20);
             //enemy.setVelocityX(-100)
+        }else if (enemy.xPos <= this.playerX) {
+            //enemy.xPos += 10;
+            enemy.setVelocityX(Phaser.Math.Between(100, 200), 20)
+            enemy.flipX = true;
         }
         //console.log("Enemy HP: " + enemy.hp)
         //var targetVelocity = this.player.body.velocity.clone();
-        console.log("e x: "+Math.round(enemy.x))
+        console.log("e x: "+Math.round(enemy.xPos))
         console.log("p x: " + Math.round(this.playerX))
-        
-        //    enemy.x -= Math.floor(Math.random() * 10) + 3
-          //  enemy.body.setVelocityX(-200 )
           
     }
     if (this.cursors.left.isDown)

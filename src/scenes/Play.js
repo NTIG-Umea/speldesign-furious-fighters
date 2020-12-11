@@ -29,9 +29,13 @@ export default class PlayScene extends Phaser.Scene {
     this.textLevel;
     this.enemyCount = 0;
     this.enemies = [];
+    this.enemiesInRange = [];
+    this.range = 50;
+    this.date = new Date();
+    this.beforeTime = this.date.getTime();
     this.playerX = 0;
     this.playerY = 0;
-    this.enemyGroup;
+    
     // load the map 
    this.map = this.make.tilemap({key: 'map'});
    // tiles for the ground layer
@@ -61,23 +65,22 @@ export default class PlayScene extends Phaser.Scene {
    // this.player will collide with the level tiles 
    this.physics.add.collider(this.groundLayer, this.player);
    
-   for (var i = 0; i < 2; i++){
-       const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-       //const x = Math.floor(Math.random()*500);
-       const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
-       enemy.yPos = 0;
-       enemy.xPos = 0;
-       enemy.setScale(2.5);
-       enemy.setCollideWorldBounds(true);
-       enemy.setBounce(0.5);
-       //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
-       enemy.allowGravity = false;
-       //enemy.body.setSize(enemy.width-100, enemy.height-100);
-       this.physics.add.collider(this.groundLayer, enemy);
-       enemy.hp = 10;
-       this.enemyCount++
-       this.enemies.push(enemy);
-   }
+for (var i = 0; i < 2; i++) {
+    const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+    const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+    enemy.yPos = 0;
+    enemy.xPos = 0;
+    enemy.setScale(2.5);
+    enemy.setCollideWorldBounds(true);
+    enemy.setBounce(0.5);
+    //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    enemy.allowGravity = false;
+    //enemy.body.setSize(enemy.width-100, enemy.height-100);
+    this.physics.add.collider(this.groundLayer, enemy);
+    enemy.hp = 10;
+    this.enemyCount++
+    this.enemies.push(enemy);
+}
 
    this.coinLayer.setTileIndexCallback(17, collectCoin, this);
    // when the this.player overlaps with a tile with index 17, collectCoin 
@@ -144,6 +147,7 @@ export default class PlayScene extends Phaser.Scene {
     //     return;
     // }
     //this.playerHp -= 10;
+
     if (this.scene.isVisible('pause')) {
         this.scene.setVisible(false, 'pause');
       }
@@ -245,14 +249,12 @@ if (this.level == 3){
     if (this.enemyCount < 5){
     for (var i = 0; i < 4; i++){
         const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-        //const x = Math.floor(Math.random()*500);
         const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
         enemy.setScale(2.5);
         enemy.setCollideWorldBounds(true);
         enemy.setBounce(0.5);
         //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
         enemy.allowGravity = false;
-        //enemy.body.setSize(enemy.width-100, enemy.height-100);
         this.physics.add.collider(this.groundLayer, enemy);
         enemy.hp = 15;
         this.enemyCount++;
@@ -260,6 +262,7 @@ if (this.level == 3){
     }
 }
 }
+this.enemiesInRange = [];
     for (var enemy of this.enemies){
         if (enemy.body.onFloor() & enemy.y <= 0) {
             //enemy.y -= 10;
@@ -269,18 +272,29 @@ if (this.level == 3){
             //enemy.xPos -= 10;
             enemy.setVelocityX(-Phaser.Math.Between(100, 200), 20)
             enemy.flipX = false;
-            //enemy.setVelocityX(Phaser.Math.Between(-200, 200), 20);
-            //enemy.setVelocityX(-100)
         }else if (enemy.xPos <= this.playerX) {
             //enemy.xPos += 10;
             enemy.setVelocityX(Phaser.Math.Between(100, 200), 20)
             enemy.flipX = true;
         }
-        //console.log("Enemy HP: " + enemy.hp)
-        //var targetVelocity = this.player.body.velocity.clone();
-        console.log("e x: "+Math.round(enemy.xPos))
-        console.log("p x: " + Math.round(this.playerX))
+        var distanceToPlayerX = Math.abs(enemy.x - this.player.x);
+        var distanceToPlayerY = Math.abs(enemy.y - this.player.y);
+        var distance = Math.sqrt(Math.pow(distanceToPlayerX,2) + Math.pow(distanceToPlayerY, 2));
+        if (distance <= this.range) {
+            this.enemiesInRange.push(enemy);
+        }
           
+    }
+    for (let enemy in this.enemiesInRange){
+        if (this.playerHp > 0 ){
+        this.playerHp -= 1;
+        this.textPlayerHp.setText("Your HP: " + this.playerHp); // set the text to show the current score   
+        this.enemiesInRange.splice(this.enemiesInRange.indexOf(enemy))
+        }
+    }
+    if (this.playerHp <= 0){
+        this.scene.start('end');
+        //this.scene.remove();
     }
     if (this.cursors.left.isDown)
     {

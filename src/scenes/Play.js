@@ -23,6 +23,7 @@ export default class PlayScene extends Phaser.Scene {
     this.map;
     this.player;
     this.coins;
+    this.kaka;
     this.cursors;
     this.groundLayer;
     this.coinLayer;
@@ -46,7 +47,7 @@ export default class PlayScene extends Phaser.Scene {
    this.groundLayer.setCollisionByExclusion([-1]);
 
    // coin image used as tileset
-    this.coinTiles = this.map.addTilesetImage('coin');
+   this.coinTiles = this.map.addTilesetImage('kaka');
    // add coins as tiles
    this.coinLayer = this.map.createDynamicLayer('Coins', this.coinTiles, 0, 0);
 
@@ -100,6 +101,13 @@ for (var i = 0; i < 2; i++) {
        frameRate: 10,
    });
 
+   this.anims.create({
+    key: 'spin', 
+    frames: this.anims.generateFrameNames('kaka', { 
+    frames: ['0', '1', '5', '4', '2', '3']}), 
+    frameRate: 10, 
+    repeat: -1
+})
 
    this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -198,10 +206,11 @@ for (var i = 0; i < 2; i++) {
         if (this.coins == undefined) {
         
         this.coins = this.physics.add.group({
-    key: 'coin',
+    key: 'kaka',
     repeat: 30,
     setXY: { x: 0, y: 0, stepX: 70 }
 });
+
 this.physics.add.collider(this.groundLayer, this.coins);
 
 this.coins.children.iterate(function (child) {
@@ -325,8 +334,6 @@ this.enemiesInRange = [];
 
 }
 }
-
-  
 
 // this function will be called when the this.player touches a coin
 function collectCoin(sprite, tile) {

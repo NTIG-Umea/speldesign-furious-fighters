@@ -292,6 +292,10 @@ this.enemiesInRange = [];
         this.enemiesInRange.splice(this.enemiesInRange.indexOf(enemy))
         }
     }
+    if (this.playerHp <= 0){
+        this.scene.start('end');
+        //this.scene.remove();
+    }
     if (this.cursors.left.isDown)
     {
         this.player.body.setVelocityX(-200);

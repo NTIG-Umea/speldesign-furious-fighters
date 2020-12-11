@@ -10,7 +10,7 @@ export default class EndScene extends Phaser.Scene {
 
     this.add.text(400, 200, 'Game Over\n\n< menu >', {
       align: 'center',
-      fill: 'white',
+      fill: 'red',
       fontFamily: 'sans-serif',
       fontSize: 48
     })

@@ -5,10 +5,10 @@ export default function(player, enemies, range, enemiesInRange){
        // console.log("e:" + enemy.x)
         //console.log("p: " + player.x)
         if (enemy.x > player.x){
-            enemy.setVelocityX(-Phaser.Math.Between(150, 250), 20)
+            enemy.body.setVelocityX(-Phaser.Math.Between(150, 250), 20)
             enemy.flipX = false;
         }else if (enemy.x < player.x) {
-            enemy.setVelocityX(Phaser.Math.Between(150, 250), 20)
+            enemy.body.setVelocityX(Phaser.Math.Between(150, 250), 20)
             enemy.flipX = true;
         } else if (enemy.x == player.x){
             enemy.body.setVelocityX(0)

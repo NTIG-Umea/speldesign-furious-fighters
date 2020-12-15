@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
-import CollectCoin from '../CollectCoin'
-import updateEnemies from '../Enemies'
-import updateEnemiesInRange from '../EnemiesInRange'
-import levelUpdater from '../LevelUpdater';
+import CollectCoin from './CollectCoin'
+import updateEnemies from './Enemies'
+import updateEnemiesInRange from './EnemiesInRange'
+import levelUpdater from './LevelUpdater';
 
 export default class PlayScene extends Phaser.Scene {
   constructor () {

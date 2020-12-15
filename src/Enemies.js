@@ -1,17 +1,17 @@
-export default function(player, enemies, playerX, range, enemiesInRange){
+export default function(player, enemies, range, enemiesInRange){
     for (var enemy of enemies){
         if (enemy.body.onFloor() & enemy.y <= 0) {
-            //enemy.y -= 10;
-            //enemy.setVelocityY(-500)
         }
-        if (enemy.xPos >= playerX){
-            //enemy.xPos -= 10;
-            enemy.setVelocityX(-Phaser.Math.Between(100, 200), 20)
+       // console.log("e:" + enemy.x)
+        //console.log("p: " + player.x)
+        if (enemy.x > player.x){
+            enemy.setVelocityX(-Phaser.Math.Between(150, 250), 20)
             enemy.flipX = false;
-        }else if (enemy.xPos <= playerX) {
-            //enemy.xPos += 10;
-            enemy.setVelocityX(Phaser.Math.Between(100, 200), 20)
+        }else if (enemy.x < player.x) {
+            enemy.setVelocityX(Phaser.Math.Between(150, 250), 20)
             enemy.flipX = true;
+        } else if (enemy.x == player.x){
+            enemy.body.setVelocityX(0)
         }
         var distanceToPlayerX = Math.abs(enemy.x - player.x);
         var distanceToPlayerY = Math.abs(enemy.y - player.y);

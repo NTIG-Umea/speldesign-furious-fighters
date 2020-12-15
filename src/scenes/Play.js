@@ -38,8 +38,6 @@ export default class PlayScene extends Phaser.Scene {
     this.range = 50;
     this.date = new Date();
     this.beforeTime = this.date.getTime();
-    this.playerX = 0;
-    this.playerY = 0;
     
     // load the map 
    this.map = this.make.tilemap({key: 'map'});
@@ -233,7 +231,7 @@ if (this.level == 3){
 }
 }
 this.enemiesInRange = [];
-    updateEnemies(this.player, this.enemies, this.playerX, this.range, this.enemiesInRange);
+    updateEnemies(this.player, this.enemies, this.range, this.enemiesInRange);
     updateEnemiesInRange(this.enemiesInRange, this.playerHp, this.textPlayerHp);
     if (this.playerHp <= 0){
         this.scene.start('end');
@@ -244,14 +242,12 @@ this.enemiesInRange = [];
         this.player.body.setVelocityX(-200);
         this.player.anims.play('walk', true); // walk left
         this.player.flipX = true; // flip the sprite to the left
-        this.playerX = -10;
     }
     else if (this.cursors.right.isDown)
     {
         this.player.body.setVelocityX(200);
         this.player.anims.play('walk', true);
         this.player.flipX = false; // use the original sprite looking to the right
-        this.playerX = 10;
     } else {
         this.player.body.setVelocityX(0);
         this.player.anims.play('idle', true);
@@ -260,7 +256,6 @@ this.enemiesInRange = [];
     if (this.cursors.up.isDown && this.player.body.onFloor())
     {
         this.player.body.setVelocityY(-500); 
-        this.playerY = -10;       
     }
     if (this.scene.isVisible('pause')) {
       this.scene.setVisible(false, 'pause');

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import images from './assets/*.png';
-import json from './assets/*.json';
+import images from './../assets/*.png';
+import json from './../assets/*.json';
 
 export default class BootScene extends Phaser.Scene {
   constructor () {

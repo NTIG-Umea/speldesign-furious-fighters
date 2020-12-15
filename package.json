@@ -13,7 +13,6 @@
   "author": "Jens",
   "license": "ISC",
   "dependencies": {
-    "parcel": "^1.12.4",
     "phaser": "^3.24.1"
   },
   "devDependencies": {

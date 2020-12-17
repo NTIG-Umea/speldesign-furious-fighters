@@ -1,14 +1,22 @@
 export default function(player, enemies, range, enemiesInRange){
     for (var enemy of enemies){
         if (enemy.body.onFloor() & enemy.y <= 0) {
+            enemy.body.setVelocityY(-500); 
         }
-       // console.log("e:" + enemy.x)
-        //console.log("p: " + player.x)
+        if (enemy.y > player.y){
+            enemy.body.setVelocityY(-Phaser.Math.Between(100, 150), 20)
+        }else if (enemy.y < player.y) {
+            enemy.body.setVelocityY(Phaser.Math.Between(100, 150), 20)
+        } else if (enemy.y == player.y){
+            enemy.body.setVelocityY(0)
+        }
+        console.log("e y:" + enemy.y)
+        console.log("p y: " + player.y)
         if (enemy.x > player.x){
-            enemy.body.setVelocityX(-Phaser.Math.Between(150, 250), 20)
+            enemy.body.setVelocityX(-Phaser.Math.Between(100, 250), 20)
             enemy.flipX = false;
         }else if (enemy.x < player.x) {
-            enemy.body.setVelocityX(Phaser.Math.Between(150, 250), 20)
+            enemy.body.setVelocityX(Phaser.Math.Between(100, 250), 20)
             enemy.flipX = true;
         } else if (enemy.x == player.x){
             enemy.body.setVelocityX(0)

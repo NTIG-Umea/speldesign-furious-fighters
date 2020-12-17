@@ -231,8 +231,8 @@ if (this.level == 3){
 }
 }
 this.enemiesInRange = [];
-    updateEnemies(this.player, this.enemies, this.range, this.enemiesInRange);
-    updateEnemiesInRange(this.enemiesInRange, this.playerHp, this.textPlayerHp);
+    this.enemiesInRange = updateEnemies(this.player, this.enemies, this.range, this.enemiesInRange);
+    this.playerHp = updateEnemiesInRange(this.enemiesInRange, this.playerHp, this.textPlayerHp);
     if (this.playerHp <= 0){
         this.scene.start('end');
         //this.scene.remove();

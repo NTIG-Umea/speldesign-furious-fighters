@@ -7,7 +7,7 @@ export default function(player, enemies, range, enemiesInRange){
             enemy.body.setVelocityY(-Phaser.Math.Between(100, 150), 20)
         }else if (enemy.y < player.y) {
             enemy.body.setVelocityY(Phaser.Math.Between(100, 150), 20)
-        } else if (enemy.y == player.y){
+        } else if (Math.round(enemy.y) == Math.round(player.y)){
             enemy.body.setVelocityY(0)
         }
         console.log("e y:" + enemy.y)
@@ -18,7 +18,7 @@ export default function(player, enemies, range, enemiesInRange){
         }else if (enemy.x < player.x) {
             enemy.body.setVelocityX(Phaser.Math.Between(100, 250), 20)
             enemy.flipX = true;
-        } else if (enemy.x == player.x){
+        } else if (Math.round(enemy.x) == Math.round(player.x)){
             enemy.body.setVelocityX(0)
         }
         var distanceToPlayerX = Math.abs(enemy.x - player.x);
@@ -29,4 +29,5 @@ export default function(player, enemies, range, enemiesInRange){
         }
           
     }
+    return enemiesInRange;
 }

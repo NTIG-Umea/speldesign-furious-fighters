@@ -38,6 +38,7 @@ export default class PlayScene extends Phaser.Scene {
     this.range = 50;
     this.date = new Date();
     this.beforeTime = this.date.getTime();
+    this.keys = this.input.keyboard.addKeys('K');
     
     // load the map 
    this.map = this.make.tilemap({key: 'map'});
@@ -256,6 +257,9 @@ this.enemiesInRange = [];
     if (this.cursors.up.isDown && this.player.body.onFloor())
     {
         this.player.body.setVelocityY(-500); 
+    }
+    if (this.keys.K.isDown ){
+        //Make damage to enemies
     }
     if (this.scene.isVisible('pause')) {
       this.scene.setVisible(false, 'pause');

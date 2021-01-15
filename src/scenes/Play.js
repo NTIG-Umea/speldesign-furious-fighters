@@ -60,7 +60,7 @@ export default class PlayScene extends Phaser.Scene {
 
    // create the this.player sprite    
    this.player = this.physics.add.sprite(200, 200, 'player');
-   this.player.setBounce(0.2); // our this.player will bounce from items
+   this.player.setBounce(0.1); // our this.player will bounce from items
    this.player.setCollideWorldBounds(true); // don't go out of the map    
    
    // small fix to our this.player images, we resize the physics body object slightly
@@ -213,7 +213,7 @@ if (this.level == 2){
         this.enemies.push(enemy);
     }
 }
-}
+}   
 if (this.level == 3){
     if (this.enemyCount < 5){
     for (var i = 0; i < 4; i++){

@@ -3,7 +3,7 @@ import CollectCoin from '../CollectCoin'
 import updateEnemies from '../Enemies'
 import updateEnemiesInRange from '../EnemiesInRange'
 import levelUpdater from '../LevelUpdater';
-
+import updateMovement from '../Movement'
 export default class PlayScene extends Phaser.Scene {
   constructor () {
     super({
@@ -60,7 +60,7 @@ export default class PlayScene extends Phaser.Scene {
 
    // create the this.player sprite    
    this.player = this.physics.add.sprite(200, 200, 'player');
-   this.player.setBounce(0.2); // our this.player will bounce from items
+   this.player.setBounce(0.1); // our this.player will bounce from items
    this.player.setCollideWorldBounds(true); // don't go out of the map    
    
    // small fix to our this.player images, we resize the physics body object slightly
@@ -163,7 +163,7 @@ for (var i = 0; i < 2; i++) {
         this.scene.setVisible(false, 'pause');
       }
       if (this.coinLayer.culledTiles.length == 1) {
-        levelUpdater(this.coins, this.score, this.level, this.textLevel, this.textPlayerHp, this);
+        this.level = levelUpdater(this.coins, this.score, this.level, this.textLevel, this.textPlayerHp, this);
         if (this.coins == undefined) {
           
           this.coins = this.physics.add.group({
@@ -181,7 +181,11 @@ for (var i = 0; i < 2; i++) {
           coin.disableBody(true, true);
   
       this.score += 1;
-      this.textScore.setText('Score: ' + this.score);
+      if (this.playerHp <= 99.5){
+      this.playerHp += 0.5;
+      }
+      this.textScore.setText('Score: ' + Math.round(this.score));
+      this.textPlayerHp.setText('Your HP: ' + Math.round(this.playerHp));
   
       if (this.coins.countActive(true) === 0)
       {
@@ -213,9 +217,9 @@ if (this.level == 2){
         this.enemies.push(enemy);
     }
 }
-}
+} 
 if (this.level == 3){
-    if (this.enemyCount < 5){
+    if (this.enemyCount < 15){
     for (var i = 0; i < 4; i++){
         const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
@@ -225,12 +229,29 @@ if (this.level == 3){
         //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
         enemy.allowGravity = false;
         this.physics.add.collider(this.groundLayer, enemy);
-        enemy.hp = 15;
+        enemy.hp = 20;
         this.enemyCount++;
         this.enemies.push(enemy);
     }
 }
+} 
+if (this.level == 4){
+    if (this.enemyCount < 20){
+    for (var i = 0; i < 4; i++){
+        const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(2.5);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.5);
+        //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        enemy.allowGravity = false;
+        this.physics.add.collider(this.groundLayer, enemy);
+        enemy.hp = 25;
+        this.enemyCount++;
+        this.enemies.push(enemy);
+    }
 }
+} 
 this.enemiesInRange = [];
     this.enemiesInRange = updateEnemies(this.player, this.enemies, this.range, this.enemiesInRange);
     this.playerHp = updateEnemiesInRange(this.enemiesInRange, this.playerHp, this.textPlayerHp);
@@ -238,29 +259,7 @@ this.enemiesInRange = [];
         this.scene.start('end');
         //this.scene.remove();
     }
-    if (this.cursors.left.isDown)
-    {
-        this.player.body.setVelocityX(-200);
-        this.player.anims.play('walk', true); // walk left
-        this.player.flipX = true; // flip the sprite to the left
-    }
-    else if (this.cursors.right.isDown)
-    {
-        this.player.body.setVelocityX(200);
-        this.player.anims.play('walk', true);
-        this.player.flipX = false; // use the original sprite looking to the right
-    } else {
-        this.player.body.setVelocityX(0);
-        this.player.anims.play('idle', true);
-    }
-    // jump 
-    if (this.cursors.up.isDown && this.player.body.onFloor())
-    {
-        this.player.body.setVelocityY(-500); 
-    }
-    if (this.keys.K.isDown ){
-        //Make damage to enemies
-    }
+    updateMovement(this.cursors, this.player, this.keys);
     if (this.scene.isVisible('pause')) {
       this.scene.setVisible(false, 'pause');
     }

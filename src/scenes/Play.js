@@ -70,7 +70,7 @@ export default class PlayScene extends Phaser.Scene {
    this.physics.add.collider(this.groundLayer, this.player);
    
 for (var i = 0; i < 2; i++) {
-    const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+    const x = (this.player.x < 600) ? Phaser.Math.Between(400, 1200) : Phaser.Math.Between(0, 1200);
     const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
     enemy.yPos = 0;
     enemy.xPos = 0;

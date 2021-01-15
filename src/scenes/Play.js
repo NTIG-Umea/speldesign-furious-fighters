@@ -181,7 +181,9 @@ for (var i = 0; i < 2; i++) {
           coin.disableBody(true, true);
   
       this.score += 1;
-      this.textScore.setText('Score: ' + this.score);
+      this.playerHp += 0.5;
+      this.textScore.setText('Score: ' + Math.round(this.score));
+      this.textPlayerHp.setText('Your HP: ' + Math.round(this.playerHp));
   
       if (this.coins.countActive(true) === 0)
       {

@@ -163,7 +163,7 @@ for (var i = 0; i < 2; i++) {
         this.scene.setVisible(false, 'pause');
       }
       if (this.coinLayer.culledTiles.length == 1) {
-        levelUpdater(this.coins, this.score, this.level, this.textLevel, this.textPlayerHp, this);
+        this.level = levelUpdater(this.coins, this.score, this.level, this.textLevel, this.textPlayerHp, this);
         if (this.coins == undefined) {
           
           this.coins = this.physics.add.group({
@@ -217,9 +217,9 @@ if (this.level == 2){
         this.enemies.push(enemy);
     }
 }
-}   
+} 
 if (this.level == 3){
-    if (this.enemyCount < 5){
+    if (this.enemyCount < 15){
     for (var i = 0; i < 4; i++){
         const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
         const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
@@ -229,12 +229,29 @@ if (this.level == 3){
         //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
         enemy.allowGravity = false;
         this.physics.add.collider(this.groundLayer, enemy);
-        enemy.hp = 15;
+        enemy.hp = 20;
         this.enemyCount++;
         this.enemies.push(enemy);
     }
 }
+} 
+if (this.level == 4){
+    if (this.enemyCount < 20){
+    for (var i = 0; i < 4; i++){
+        const x = (this.player.x < 600) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        const enemy = this.physics.add.sprite(x, 0, "enemy").setTint(0xff0000);
+        enemy.setScale(2.5);
+        enemy.setCollideWorldBounds(true);
+        enemy.setBounce(0.5);
+        //enemy.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        enemy.allowGravity = false;
+        this.physics.add.collider(this.groundLayer, enemy);
+        enemy.hp = 25;
+        this.enemyCount++;
+        this.enemies.push(enemy);
+    }
 }
+} 
 this.enemiesInRange = [];
     this.enemiesInRange = updateEnemies(this.player, this.enemies, this.range, this.enemiesInRange);
     this.playerHp = updateEnemiesInRange(this.enemiesInRange, this.playerHp, this.textPlayerHp);

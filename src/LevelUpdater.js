@@ -1,18 +1,18 @@
 export default function(coins, score, level, textLevel, textPlayerHp, thi){
     
         if (coins == undefined){
-        if (score >= 15 & score < 50){
+        if (score >= 15 & score < 30){
             level++;
             textLevel.setText("Level: " + level);
         }
     }
         if (coins != undefined){
         if (coins.countActive(true) == 0){
-            if (score >= 50 & score < 100){
+            if (score >= 30 & score < 80){
                 level++;
                 textLevel.setText("Level: " + level);
             }
-            if (score >= 100 & score < 200){
+            if (score >= 80 & score < 150){
                 level++;
                 textLevel.setText("Level: " + level)
                 //move player and level text a little bit
@@ -29,7 +29,7 @@ export default function(coins, score, level, textLevel, textPlayerHp, thi){
                 // fix the text to the camera
                 textLevel.setScrollFactor(0);
             }
-            if (score >= 200 & score < 300){
+            if (score >= 150 & score < 300){
                 level++;
                 textLevel.setText("Level: " + level);
             }
@@ -41,6 +41,11 @@ export default function(coins, score, level, textLevel, textPlayerHp, thi){
                 level++;
                 textLevel.setText("Level: " + level);
             }
+            if (score >= 500 & score < 600){
+                level++;
+                textLevel.setText("Level: " + level);
+            }
         }
 }
+return level;
 }

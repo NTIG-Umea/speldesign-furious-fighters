@@ -3,7 +3,7 @@ import CollectCoin from '../CollectCoin'
 import updateEnemies from '../Enemies'
 import updateEnemiesInRange from '../EnemiesInRange'
 import levelUpdater from '../LevelUpdater';
-
+import updateMovement from '../Movement'
 export default class PlayScene extends Phaser.Scene {
   constructor () {
     super({
@@ -238,29 +238,7 @@ this.enemiesInRange = [];
         this.scene.start('end');
         //this.scene.remove();
     }
-    if (this.cursors.left.isDown)
-    {
-        this.player.body.setVelocityX(-200);
-        this.player.anims.play('walk', true); // walk left
-        this.player.flipX = true; // flip the sprite to the left
-    }
-    else if (this.cursors.right.isDown)
-    {
-        this.player.body.setVelocityX(200);
-        this.player.anims.play('walk', true);
-        this.player.flipX = false; // use the original sprite looking to the right
-    } else {
-        this.player.body.setVelocityX(0);
-        this.player.anims.play('idle', true);
-    }
-    // jump 
-    if (this.cursors.up.isDown && this.player.body.onFloor())
-    {
-        this.player.body.setVelocityY(-500); 
-    }
-    if (this.keys.K.isDown ){
-        //Make damage to enemies
-    }
+    updateMovement(this.cursors, this.player, this.keys);
     if (this.scene.isVisible('pause')) {
       this.scene.setVisible(false, 'pause');
     }

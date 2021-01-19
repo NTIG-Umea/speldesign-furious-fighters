@@ -4,6 +4,8 @@ import updateEnemies from '../Enemies'
 import updateEnemiesInRange from '../EnemiesInRange'
 import levelUpdater from '../LevelUpdater';
 import updateMovement from '../Movement'
+import formatTime from '../FormatTime';
+import timerEvent from '../TimerEvent'
 export default class PlayScene extends Phaser.Scene {
   constructor () {
     super({
@@ -16,6 +18,8 @@ export default class PlayScene extends Phaser.Scene {
       }
     });
   }
+
+  
 
   create () {
     this.gameOver = false;
@@ -39,6 +43,10 @@ export default class PlayScene extends Phaser.Scene {
     this.date = new Date();
     this.beforeTime = this.date.getTime();
     this.keys = this.input.keyboard.addKeys('K');
+    this.timerText;
+    this.timedEvent;
+    this.initialTime = 60;
+    this.hiddenTimeStamp = 0;
     
     // load the map 
    this.map = this.make.tilemap({key: 'map'});
@@ -127,6 +135,22 @@ for (var i = 0; i < 2; i++) {
        fontSize: '20px',
        fill: '#ffffff'
    });
+   this.timerText = this.add.text(480, 570, 'Time remaining: ' + formatTime(this.initialTime), {
+    fontSize: '20px',
+    fill: '#ffffff'
+});
+this.timerText.setScrollFactor(0)
+this.timedEvent = this.time.addEvent({ delay: 1000, callback: timerEvent(this.initialTime, this.timerText, formatTime), callbackScope: this, loop: true });
+/*
+this.game.events.on('hidden', () => {
+    this.hiddenTimeStamp = performance.now();
+    });
+
+this.game.events.on('visible', () => {
+    let elapsedTime = Math.floor((performance.now() - this.hiddenTimeStamp)/1000); //seconds
+    this.initialTime -= elapsedTime;
+    })*/
+
    // fix the text to the camera
    this.textScore.setScrollFactor(0);
    this.textPlayerHp = this.add.text(140, 570, 'Your HP: 100', {
@@ -153,12 +177,6 @@ for (var i = 0; i < 2; i++) {
   }
 
   update () {
-    // if (this.gameOver)
-    // {
-    //     return;
-    // }
-    //this.playerHp -= 10;
-
     if (this.scene.isVisible('pause')) {
         this.scene.setVisible(false, 'pause');
       }

@@ -31,6 +31,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.atlas('kaka', images.kaka, json.kaka);
     this.load.atlas('player', images.tomte, json.tomte);
 
+    this.load.image('background', images.Bakgrund);
+
     this.load.on('progress', function (progress) {
       bar.setScale(progress, 1);
     });

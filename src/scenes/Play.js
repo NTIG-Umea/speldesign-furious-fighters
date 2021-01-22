@@ -101,20 +101,20 @@ for (var i = 0; i < 2; i++) {
    // this.player walk animation
    this.anims.create({
        key: 'walk',
-       frames: this.anims.generateFrameNames('player', {prefix: 'p1_walk', coint: 1, end: 11, zeroPad: 2}),
+       frames: this.anims.generateFrameNumbers('player', { frames: ['0.png', '1.png', '2.png', '3.png'] }),
        frameRate: 10,
        repeat: -1
    });
    // idle with only one frame, so repeat is not neaded
    this.anims.create({
        key: 'idle',
-       frames: [{key: 'player', frame: 'p1_stand'}],
+       frames: [{key: 'player', frame: '1.png'}],
        frameRate: 10,
    });
    this.anims.create({
     key: 'spin', 
-    frames: this.anims.generateFrameNames('kaka', { 
-    frames: ['0', '1', '5', '4', '2', '3']}), 
+    frames: this.anims.generateFrameNumbers('kaka', { 
+    frames: ['0', '1', '2', '5', '4']}), 
     frameRate: 10, 
     repeat: -1
 })

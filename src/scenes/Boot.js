@@ -19,13 +19,17 @@ export default class BootScene extends Phaser.Scene {
     this.load.spritesheet('tiles', images.tiles, {frameWidth: 70, frameHeight: 70});
     // simple coin image
     //this.load.multiatlas('kaka', 'assets/kaka.json', 'assets/');
-    this.load.atlas('kaka', images.kaka, json.kaka);
+    
+   
     // player animations
-    this.load.atlas('player', images.player, json.player);
     this.load.image('space', images.space);
     this.load.image('logo', images.logo);
     this.load.image('red', images.red);
 
+
+    this.load.multiatlas('tomte', 'assets/tomte.json', 'assets/');
+    this.load.atlas('kaka', images.kaka, json.kaka);
+    this.load.atlas('player', images.tomte, json.tomte);
 
     this.load.on('progress', function (progress) {
       bar.setScale(progress, 1);

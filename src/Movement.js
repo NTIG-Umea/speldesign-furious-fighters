@@ -3,14 +3,14 @@ export default function (cursors, player, keys) {
     if (cursors.left.isDown)
     {
         player.body.setVelocityX(-200);
-        player.anims.play('walk', true); // walk left
         player.flipX = true; // flip the sprite to the left
+        player.anims.play('walk', true); // walk left
     }
     else if (cursors.right.isDown)
     {
         player.body.setVelocityX(200);
-        player.anims.play('walk', true);
         player.flipX = false; // use the original sprite looking to the right
+        player.anims.play('walk', true);
     } else {
         player.body.setVelocityX(0);
         player.anims.play('idle', true);

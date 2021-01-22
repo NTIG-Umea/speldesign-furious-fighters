@@ -47,6 +47,12 @@ export default class PlayScene extends Phaser.Scene {
     this.timedEvent;
     this.initialTime = 60;
     this.hiddenTimeStamp = 0;
+
+    this.image = this.add.image(500, 300, 'background');
+    let scaleX = this.cameras.main.width / this.image.width
+    let scaleY = this.cameras.main.height / this.image.height
+    let scale = Math.max(scaleX, scaleY)
+  this.image.setScale(scale).setScrollFactor(0)
     
     // load the map 
    this.map = this.make.tilemap({key: 'map'});

@@ -24,9 +24,9 @@ Så här står det i planeringen skriven av estetarna under "Huvuddrag(key featu
 Projektet har innehållit några olika delar, exempelvis grafik, rörelse, levels, pepparkakor, fiender som spawnas med mera. 
 
 <br>
-Jag har själv testat spelet i webbläsaren under programmeringstiden och debuggat errors och fixat olika errors flera gånger under tidens gång. Jag har till exempel använt inspekteraren i webbläsaren för att kolla stacktracen för error.
+Jag har själv testat spelet i webbläsaren under programmeringstiden och debuggat errors och fixat olika errors flera gånger under tidens gång. Jag har till exempel använt inspekteraren i webbläsaren för att kolla stacktracen för error. Ett exempel på ett error som jag stötte på var när jag byggde till Github pages med flera klasser. Då fick jag ett error i webbläsarkonsolen med ingen bra stacktrace. Men jag förstod att det hade o göra med att det var flera filer som main filen inte känner igen eftersom det fungerade innan jag delade upp det i flera filer. Jag fixade detta genom att länka till filerna i main.js och sedan byggde om till Github pages och sedan gick spelet att spela på Github pages.
 
-Jag fick även speltest feedback av andra klasser när spelet var halvklart och efter det så har jag hunnit lagt till det mesta av den feedbacken exempelvis så att man inte hoppar lika högt, bakgrund grafik, fler levlar och fiender men hann inte färdigt med till exempel timern.
+Jag fick även speltest feedback av andra klasser när spelet var halvklart och efter det så har jag hunnit lagt till det mesta av den feedbacken exempelvis så att man inte hoppar lika högt, bakgrund grafik, fler levlar och fiender men hann inte färdigt med till exempel timern. Jag valde att fixa de som kändes som viktigast först eller de som flest personer nämnt i speltestens feedback.
 <br>
 De funktioner jag gjorde i detta spel var till exempel följande:
 <br>

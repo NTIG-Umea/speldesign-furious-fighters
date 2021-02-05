@@ -5,6 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "build": "rm -rv docs/ & parcel build src/index.html -d docs/ --public-url /speldesign-furious-fighters --experimental-scope-hoisting",
+    "spel": "rm -rv docs/ & parcel build src/index.html -d spelsamling/ --public-url /speldesign-furious-fighters --experimental-scope-hoisting",
     "watch": "parcel watch src/index.html",
     "start": "parcel serve src/index.html",
     "clean": "rm -v dist/*",
@@ -13,6 +14,7 @@
   "author": "Jens",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "phaser": "^3.24.1"
   },
   "devDependencies": {

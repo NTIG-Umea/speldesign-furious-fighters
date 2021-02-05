@@ -13,6 +13,7 @@
   "author": "Jens",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "phaser": "^3.24.1"
   },
   "devDependencies": {
